@@ -64,11 +64,11 @@ Functions and literals can be combined to express complex expressions :
   - `substr('abcdef', 1, 5)` ==> `'bcde'`
   - `substr('abcdef', 0, -1)` ==> `abcdef`
   - `substr('abcdef', 1, -2)` ==> `bcde`
-- `concat(str: text, append: text): text` : textual concatenation
-  - `concat('abc', 'def')` ==> `'abcdef'`
-- `substr(str: text, begin: number, end: number): text` : textual sub-string extraction based on index and length
+- `substrl(str: text, begin: number, end: number): text` : textual sub-string extraction based on index and length
   - `substrl('abcdef', 1, 5)` ==> `'bcdef'`
   - `substrl('abcdef', -3, 2)` ==> `'ef'`
+- `concat(str: text, append: text): text` : textual concatenation
+  - `concat('abc', 'def')` ==> `'abcdef'`
 - `len(str: text): number` : textual length
   - `len('abcdef')` ==> 6
   - `len('abc')` ==> 3
