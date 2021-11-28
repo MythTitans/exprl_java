@@ -64,6 +64,8 @@ Functions and literals can be combined to express complex expressions :
   - `substr('abcdef', 1, 5)` ==> `'bcde'`
   - `substr('abcdef', 0, -1)` ==> `abcdef`
   - `substr('abcdef', 1, -2)` ==> `bcde`
+- `concat(str: text, append: text): text` : textual concatenation
+  - `concat('abc', 'def')` ==> `'abcdef'`
 - `substr(str: text, begin: number, end: number): text` : textual sub-string extraction based on index and length
   - `substrl('abcdef', 1, 5)` ==> `'bcdef'`
   - `substrl('abcdef', -3, 2)` ==> `'ef'`
@@ -94,7 +96,34 @@ Functions and literals can be combined to express complex expressions :
   - `gte(1, 2)` ==> `false`
   - `gte(2, 2)` ==> `true`
   - `gte(3, 2)` ==> `true`
+- `min(argA: number, argB: number, ...argN: number)`: minimum of given numbers
+  - `min(0, 1)` ==> `0`
+  - `min(0, -1, -5)` ==> `-5`
+- `max(argA: number, argB: number, ...argN: number)`: maximum of given numbers
+  - `max(0, 1)` ==> `1`
+  - `max(0, -1, 5)`==> `5`
+- `var(variable: text): any`: access the content of a variable
+  - `var('variable-boolean')` ==> `true` with `variable-boolean` set to `true`
+  - `var('variable-text')` ==> `'abcdef'` with `variable-text` set to `'abcdef'`
+- `cond(condition: boolean, then: any, else: any): any` : conditional selection between two expressions
+  - `cond(true, 1, 2)` ==> `1`
+  - `cond(false, 1, 2)` ==> `2`
+  - `cond(false, 'a', 'b')` ==> `'b'`
  
-TODO missing funtions
+## Usage
 
-TODO how to use
+```java
+ExpressionEvaluator evaluator = new ExpressionEvaluator();
+evaluator.setVariable("state", true);
+
+// Parse and evaluate expression
+boolean result = evaluator.evaluateBoolean("var('state')");
+
+// Parse expression
+Expression parsedExpression = Parser.parse("var('state')");
+
+// Evaluate already parsed expression
+result = evaluator.evaluateBoolean(parsedExpression);
+```
+
+The evalutor guarantees that variables will keep consistent during the evaluation of an expression.
