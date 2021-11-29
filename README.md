@@ -55,7 +55,7 @@ Functions and literals can be combined to express complex expressions :
   - `ends('abcdef', 'a')` ==> `false`
   - `ends('abcdef', 'ab')` ==> `false`
   - `ends('abcdef', 'f')` ==> `true`
-- `ends(str: text, content: text): boolean` : textual contains check
+- `in(str: text, content: text): boolean` : textual contains check
   - `in('abcdef', 'a')` ==> `true`
   - `in('abcdef', 'ab')` ==> `true`
   - `in('abcdef', 'cd')` ==> `true`
