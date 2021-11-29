@@ -44,7 +44,7 @@ Functions and literals can be combined to express complex expressions :
 - `div(argA: number, argB: number): number` : division
   - `div(9, 3)` ==> `3`
   - `div(9, 2)` ==> `4.5`
-- `div(argA: number, argB: number): number` : modulus division
+- `mod(argA: number, argB: number): number` : modulus division
   - `mod(9, 3)` ==> `0`
   - `mod(9, 2)` ==> `1`
 - `starts(str: text, prefix: text): boolean` : textual starts with check
