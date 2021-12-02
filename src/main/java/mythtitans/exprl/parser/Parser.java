@@ -9,6 +9,7 @@ import static mythtitans.exprl.eval.impl.AddExpression.add;
 import static mythtitans.exprl.eval.impl.AndExpression.and;
 import static mythtitans.exprl.eval.impl.ConcatExpression.concat;
 import static mythtitans.exprl.eval.impl.CondExpression.cond;
+import static mythtitans.exprl.eval.impl.DebugExpression.debug;
 import static mythtitans.exprl.eval.impl.DivExpression.div;
 import static mythtitans.exprl.eval.impl.EndsExpression.ends;
 import static mythtitans.exprl.eval.impl.EqExpression.eq;
@@ -59,6 +60,7 @@ public class Parser {
     public static final String VAR_EXPRESSION = "var";
     public static final String COND_EXPRESSION = "cond";
     public static final String CONCAT_EXPRESSION = "concat";
+    public static final String DEBUG_EXPRESSION = "debug";
 
     public Expression parse(final String expression) throws ParsingException {
         TokenNode AST = buildAST(expression);
@@ -146,8 +148,14 @@ public class Parser {
     private Expression parseExpression(final String expression, final List<Expression> arguments) throws ParsingException {
         return switch (expression) {
             case NOT_EXPRESSION, LEN_EXPRESSION, VAR_EXPRESSION -> parseUnaryExpression(expression, arguments);
-            case EQ_EXPRESSION, NEQ_EXPRESSION, LT_EXPRESSION, LTE_EXPRESSION, GT_EXPRESSION, GTE_EXPRESSION, SUB_EXPRESSION, DIV_EXPRESSION, MOD_EXPRESSION, STARTS_EXPRESSION, ENDS_EXPRESSION, IN_EXPRESSION -> parseBinaryExpression(expression, arguments);
-            case AND_EXPRESSION, OR_EXPRESSION, ADD_EXPRESSION, MUL_EXPRESSION, MIN_EXPRESSION, MAX_EXPRESSION, CONCAT_EXPRESSION -> parseBiOrNaryExpression(expression, arguments);
+            case EQ_EXPRESSION, NEQ_EXPRESSION, LT_EXPRESSION, LTE_EXPRESSION, GT_EXPRESSION, GTE_EXPRESSION, SUB_EXPRESSION, DIV_EXPRESSION, MOD_EXPRESSION, STARTS_EXPRESSION, ENDS_EXPRESSION, IN_EXPRESSION, DEBUG_EXPRESSION -> parseBinaryExpression(
+                expression,
+                arguments
+            );
+            case AND_EXPRESSION, OR_EXPRESSION, ADD_EXPRESSION, MUL_EXPRESSION, MIN_EXPRESSION, MAX_EXPRESSION, CONCAT_EXPRESSION -> parseBiOrNaryExpression(
+                expression,
+                arguments
+            );
             case SUBSTR_EXPRESSION, SUBSTRL_EXPRESSION, COND_EXPRESSION -> parseTernaryExpression(expression, arguments);
             default -> throw new ParsingException(String.format("Unrecognized expression [%s].", expression));
         };
@@ -219,13 +227,19 @@ public class Parser {
             case LTE_EXPRESSION -> lte(argA, argB);
             case GT_EXPRESSION -> gt(argA, argB);
             case GTE_EXPRESSION -> gte(argA, argB);
+            case DEBUG_EXPRESSION -> debug(argA, argB);
             default -> throw new ParsingException(String.format("Unrecognized expression [%s].", expressionName));
         };
     }
 
     private Expression parseBiOrNaryExpression(final String expressionName, final List<Expression> arguments) throws ParsingException {
         if (arguments.size() < 2) {
-            throw new ParsingException(String.format("Invalid arguments count for [%s], expected at least [%d] but got [%d].", expressionName, 2, arguments.size()));
+            throw new ParsingException(String.format(
+                "Invalid arguments count for [%s], expected at least [%d] but got [%d].",
+                expressionName,
+                2,
+                arguments.size()
+            ));
         }
 
         Expression argA = arguments.get(0);
@@ -268,7 +282,12 @@ public class Parser {
         }
 
         public static ParsingException invalidArgumentsCount(final String token, final int expectedCount, final int actualCount) {
-            return new ParsingException(String.format("Invalid arguments count for [%s], expected [%d] but got [%d].", token, expectedCount, actualCount));
+            return new ParsingException(String.format(
+                "Invalid arguments count for [%s], expected [%d] but got [%d].",
+                token,
+                expectedCount,
+                actualCount
+            ));
         }
 
         public static ParsingException unexpectedSymbol(final char symbol, final int index) {

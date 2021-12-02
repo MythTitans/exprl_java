@@ -109,6 +109,10 @@ Functions and literals can be combined to express complex expressions :
   - `cond(true, 1, 2)` ==> `1`
   - `cond(false, 1, 2)` ==> `2`
   - `cond(false, 'a', 'b')` ==> `'b'`
+- `debug(debugged: any, label: text): any`: reports the result of the execution as a labeled debug layer and transparently forwards the result to the caller
+  - `debug(true, 'dbg1')` ==> `true` + reports `dbg1 : true` to the context
+  - `debug(cond(true, 1, 2), 'dbg-cond')` ==> `1` + reports `dbg-cond : 1` to the context
+  - `debug(cond(debug(and(true, true), 'dbg-and'), 'abcdef', ''), 'dbg-cond')` ==> `'abcdef'` + reports `dbg-and : true` and `dbg-cond : abcdef` to the context
  
 ## Usage
 

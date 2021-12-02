@@ -14,12 +14,20 @@ public class ExpressionEvaluator {
     private final ReadWriteLock lock;
 
     public ExpressionEvaluator() {
-        this(new Parser());
+        this(new Parser(), new Context());
     }
 
     public ExpressionEvaluator(final Parser parser) {
+        this(parser, new Context());
+    }
+
+    public ExpressionEvaluator(final Context context) {
+        this(new Parser(), context);
+    }
+
+    public ExpressionEvaluator(final Parser parser, final Context context) {
         this.parser = parser;
-        this.context = new Context();
+        this.context = context;
         this.lock = new ReentrantReadWriteLock();
     }
 

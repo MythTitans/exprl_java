@@ -6,7 +6,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import static mythtitans.exprl.eval.impl.DebugExpression.debug;
 import static mythtitans.exprl.eval.impl.EqExpression.EvaluationException;
+import static mythtitans.exprl.eval.impl.LiteralExpression.literal;
 
 public class ParserTest {
 
@@ -311,6 +313,14 @@ public class ParserTest {
         Assert.assertEquals("def", parser.parse("concat('', 'def')").evaluateAsText(context));
 
         Assert.assertEquals("abcdefghi", parser.parse("concat('abc', 'def', 'ghi')").evaluateAsText(context));
+    }
+
+    @Test
+    public void debug_test() throws Parser.ParsingException, EvaluationException {
+        Assert.assertTrue(parser.parse("debug(true, 'boolean')").evaluateAsBoolean(context));
+        Assert.assertEquals(12, parser.parse("debug(12, 'integer')").evaluateAsInteger(context));
+        Assert.assertEquals(15.5, parser.parse("debug(15.5, 'decimal')").evaluateAsDecimal(context), 0.000001);
+        Assert.assertEquals("abcdef", parser.parse("debug('abcdef', 'text')").evaluateAsText(context));
     }
 
     @Test

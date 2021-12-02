@@ -3,15 +3,23 @@ package mythtitans.exprl.eval;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import static mythtitans.exprl.eval.Context.Variable.variable;
 
 public class Context {
 
     private final Map<String, Variable<?>> variables;
+    private final Consumer<String> debugMessageHandler;
 
     public Context() {
+        this(ignored -> {
+        });
+    }
+
+    public Context(final Consumer<String> debugMessageHandler) {
         this.variables = new HashMap<>();
+        this.debugMessageHandler = debugMessageHandler;
     }
 
     public void setVariable(final String variable, final boolean value) {
@@ -34,7 +42,11 @@ public class Context {
         return Optional.ofNullable(variables.get(variable));
     }
 
-    public static abstract class Variable<T> {
+    public Consumer<String> getDebugMessageHandler() {
+        return debugMessageHandler;
+    }
+
+    public static abstract class Variable <T> {
 
         protected final T value;
         private final String variable;

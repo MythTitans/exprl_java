@@ -3,11 +3,16 @@ package mythtitans.exprl.eval;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import java.util.function.Consumer;
 
 import static mythtitans.exprl.eval.impl.AddExpression.add;
 import static mythtitans.exprl.eval.impl.AndExpression.and;
 import static mythtitans.exprl.eval.impl.ConcatExpression.concat;
 import static mythtitans.exprl.eval.impl.CondExpression.cond;
+import static mythtitans.exprl.eval.impl.DebugExpression.debug;
 import static mythtitans.exprl.eval.impl.DivExpression.div;
 import static mythtitans.exprl.eval.impl.EndsExpression.ends;
 import static mythtitans.exprl.eval.impl.EqExpression.EvaluationException;
@@ -31,14 +36,20 @@ import static mythtitans.exprl.eval.impl.SubExpression.sub;
 import static mythtitans.exprl.eval.impl.SubstrExpression.substr;
 import static mythtitans.exprl.eval.impl.SubstrlExpression.substrl;
 import static mythtitans.exprl.eval.impl.VarExpression.var;
+import static org.mockito.Mockito.verify;
 
 public class ExpressionTest {
+
+    @Mock
+    private Consumer<String> debugMessageConsumer;
 
     private Context context;
 
     @Before
     public void init() {
-        context = new Context();
+        MockitoAnnotations.openMocks(this);
+
+        context = new Context(debugMessageConsumer);
     }
 
     @Test
@@ -416,5 +427,20 @@ public class ExpressionTest {
         Assert.assertEquals("abcdefghi", concat(literal("abc"), literal("def"), literal("ghi")).evaluateAsText(context));
 
         Assert.assertEquals("concat", concat(literal("abc"), literal("def")).getExpressionName());
+    }
+
+    @Test
+    public void debug_test() throws EvaluationException {
+        Assert.assertTrue(debug(literal(true), literal("boolean")).evaluateAsBoolean(context));
+        verify(debugMessageConsumer).accept("boolean : true");
+
+        Assert.assertEquals(12, debug(literal(12), literal("integer")).evaluateAsInteger(context));
+        verify(debugMessageConsumer).accept("integer : 12");
+
+        Assert.assertEquals(15.5, debug(literal(15.5), literal("decimal")).evaluateAsDecimal(context), 0.000001);
+        verify(debugMessageConsumer).accept("decimal : 15.5");
+
+        Assert.assertEquals("abcdef", debug(literal("abcdef"), literal("text")).evaluateAsText(context));
+        verify(debugMessageConsumer).accept("text : abcdef");
     }
 }
