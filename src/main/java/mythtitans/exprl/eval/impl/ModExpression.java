@@ -25,7 +25,7 @@ public class ModExpression implements Expression {
 
     @Override
     public double evaluateAsDecimal(final Context context) throws EvaluationException {
-        return operandA.evaluateAsDecimal(context) % operandB.evaluateAsDecimal(context);
+        return evaluateAsInteger(context);
     }
 
     @Override
