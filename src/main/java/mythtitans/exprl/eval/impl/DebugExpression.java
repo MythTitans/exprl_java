@@ -4,6 +4,8 @@ import mythtitans.exprl.eval.Context;
 import mythtitans.exprl.eval.Expression;
 import mythtitans.exprl.parser.Parser;
 
+import java.util.Locale;
+
 public class DebugExpression implements Expression {
 
     private final Expression debuggedOperand;
@@ -35,7 +37,7 @@ public class DebugExpression implements Expression {
     @Override
     public double evaluateAsDecimal(final Context context) throws EvaluationException {
         double result = debuggedOperand.evaluateAsDecimal(context);
-        produceDebugMessage(result, context);
+        produceDebugMessage(String.format(Locale.US, "%.6f", result), context);
         return result;
     }
 

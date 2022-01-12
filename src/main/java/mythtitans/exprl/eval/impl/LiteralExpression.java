@@ -3,6 +3,8 @@ package mythtitans.exprl.eval.impl;
 import mythtitans.exprl.eval.Context;
 import mythtitans.exprl.eval.Expression;
 
+import java.util.Locale;
+
 public abstract class LiteralExpression<T> implements Expression {
 
     protected final T operand;
@@ -79,7 +81,7 @@ public abstract class LiteralExpression<T> implements Expression {
 
         @Override
         public String getExpressionName() {
-            return Double.toString(operand);
+            return String.format(Locale.US, "%.6f", operand);
         }
     }
 
