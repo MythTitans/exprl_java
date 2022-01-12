@@ -6,9 +6,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static mythtitans.exprl.eval.impl.DebugExpression.debug;
 import static mythtitans.exprl.eval.impl.EqExpression.EvaluationException;
-import static mythtitans.exprl.eval.impl.LiteralExpression.literal;
 
 public class ParserTest {
 
