@@ -8,6 +8,7 @@ A simple expression language written in Java.
 - `true` or `false` for booleans
 - `42`, `31.4` or `-1` for numbers
 - `'hello world'` for text
+- `variable-name` for literal variables
 
 **Functions**
 
@@ -113,6 +114,12 @@ Functions and literals can be combined to express complex expressions :
   - `debug(true, 'dbg1')` ==> `true` + reports `dbg1 : true` to the context
   - `debug(cond(true, 1, 2), 'dbg-cond')` ==> `1` + reports `dbg-cond : 1` to the context
   - `debug(cond(debug(and(true, true), 'dbg-and'), 'abcdef', ''), 'dbg-cond')` ==> `'abcdef'` + reports `dbg-and : true` and `dbg-cond : abcdef` to the context
+
+## Accessing variables
+
+Variables can either be accessed using `var('variable-name')` function or by using literal variable like `variable-name`. For example `and(var('variable-name'), true)` and `and(variable-name, true)` are equivalent.
+
+However, accessing a dynamically named variable (i.e. a variable whose name is built from sub-expressions) can only be accessed using `var()` function. For example `var(concat('constant-prefix.', variable-part))`. 
  
 ## Usage
 

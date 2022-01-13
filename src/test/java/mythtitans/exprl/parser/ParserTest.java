@@ -287,6 +287,11 @@ public class ParserTest {
         Assert.assertEquals(1, parser.parse("var('variable-integer')").evaluateAsInteger(context));
         Assert.assertEquals(1.5, parser.parse("var('variable-decimal')").evaluateAsDecimal(context), 0.000001);
         Assert.assertEquals("abcdef", parser.parse("var('variable-text')").evaluateAsText(context));
+
+        Assert.assertTrue(parser.parse("variable-boolean").evaluateAsBoolean(context));
+        Assert.assertEquals(1, parser.parse("variable-integer").evaluateAsInteger(context));
+        Assert.assertEquals(1.5, parser.parse("variable-decimal").evaluateAsDecimal(context), 0.000001);
+        Assert.assertEquals("abcdef", parser.parse("variable-text").evaluateAsText(context));
     }
 
     @Test
@@ -328,12 +333,28 @@ public class ParserTest {
 
         Assert.assertEquals(3, parser.parse("len(substr('test', 0, sub(len('test'), 1)))").evaluateAsInteger(context));
         Assert.assertEquals(3, parser.parse("len(substr('test', add(0, 1), -1))").evaluateAsInteger(context));
+
+        context.setVariable("variable-boolean", true);
+
+        Assert.assertEquals("abcdef", parser.parse("cond(and(true, variable-boolean), 'abcdef', '')").evaluateAsText(context));
+        Assert.assertEquals("", parser.parse("cond(and(variable-boolean, false), 'abcdef', '')").evaluateAsText(context));
     }
 
     @Test
     public void text_literal_escape_test() throws EvaluationException, Parser.ParsingException {
         Assert.assertEquals("add(1, 2)", parser.parse("'add(1, 2)'").evaluateAsText(context));
         Assert.assertEquals(9, parser.parse("len('add(1, 2)')").evaluateAsInteger(context));
+    }
+
+    @Test
+    public void literal_variable_syntax_test() throws Parser.ParsingException {
+        parser.parse("simple");
+        parser.parse("simple-dash");
+        parser.parse("simple_underscore");
+        parser.parse("composed.simple");
+        parser.parse("composed.simple-dash");
+        parser.parse("composed.simple_underscore");
+        parser.parse("composed.composed.simple");
     }
 
     @Test

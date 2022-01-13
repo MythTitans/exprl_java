@@ -4,6 +4,7 @@ import mythtitans.exprl.eval.Expression;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static mythtitans.exprl.eval.impl.AddExpression.add;
 import static mythtitans.exprl.eval.impl.AndExpression.and;
@@ -61,6 +62,8 @@ public class Parser {
     public static final String COND_EXPRESSION = "cond";
     public static final String CONCAT_EXPRESSION = "concat";
     public static final String DEBUG_EXPRESSION = "debug";
+
+    public static final Pattern LITERAL_VARIABLE_PATTERN = Pattern.compile("^[a-zA-z][\\w.-]*$");
 
     public Expression parse(final String expression) throws ParsingException {
         TokenNode AST = buildAST(expression);
@@ -149,12 +152,12 @@ public class Parser {
         return switch (expression) {
             case NOT_EXPRESSION, LEN_EXPRESSION, VAR_EXPRESSION -> parseUnaryExpression(expression, arguments);
             case EQ_EXPRESSION, NEQ_EXPRESSION, LT_EXPRESSION, LTE_EXPRESSION, GT_EXPRESSION, GTE_EXPRESSION, SUB_EXPRESSION, DIV_EXPRESSION, MOD_EXPRESSION, STARTS_EXPRESSION, ENDS_EXPRESSION, IN_EXPRESSION, DEBUG_EXPRESSION -> parseBinaryExpression(
-                expression,
-                arguments
+                    expression,
+                    arguments
             );
             case AND_EXPRESSION, OR_EXPRESSION, ADD_EXPRESSION, MUL_EXPRESSION, MIN_EXPRESSION, MAX_EXPRESSION, CONCAT_EXPRESSION -> parseBiOrNaryExpression(
-                expression,
-                arguments
+                    expression,
+                    arguments
             );
             case SUBSTR_EXPRESSION, SUBSTRL_EXPRESSION, COND_EXPRESSION -> parseTernaryExpression(expression, arguments);
             default -> throw new ParsingException(String.format("Unrecognized expression [%s].", expression));
@@ -186,6 +189,10 @@ public class Parser {
             return literal(Double.parseDouble(expression));
         } catch (NumberFormatException e) {
             // Ignored
+        }
+
+        if (LITERAL_VARIABLE_PATTERN.matcher(expression).matches()) {
+            return var(literal(expression));
         }
 
         throw new ParsingException(String.format("Invalid literal [%s].", expression));
@@ -235,10 +242,10 @@ public class Parser {
     private Expression parseBiOrNaryExpression(final String expressionName, final List<Expression> arguments) throws ParsingException {
         if (arguments.size() < 2) {
             throw new ParsingException(String.format(
-                "Invalid arguments count for [%s], expected at least [%d] but got [%d].",
-                expressionName,
-                2,
-                arguments.size()
+                    "Invalid arguments count for [%s], expected at least [%d] but got [%d].",
+                    expressionName,
+                    2,
+                    arguments.size()
             ));
         }
 
@@ -283,10 +290,10 @@ public class Parser {
 
         public static ParsingException invalidArgumentsCount(final String token, final int expectedCount, final int actualCount) {
             return new ParsingException(String.format(
-                "Invalid arguments count for [%s], expected [%d] but got [%d].",
-                token,
-                expectedCount,
-                actualCount
+                    "Invalid arguments count for [%s], expected [%d] but got [%d].",
+                    token,
+                    expectedCount,
+                    actualCount
             ));
         }
 
