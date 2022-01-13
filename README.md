@@ -137,4 +137,4 @@ Expression parsedExpression = Parser.parse("var('state')");
 result = evaluator.evaluateBoolean(parsedExpression);
 ```
 
-The evalutor guarantees that variables will keep consistent during the evaluation of an expression.
+The evaluator guarantees that variables will keep consistent during the evaluation of an expression.
