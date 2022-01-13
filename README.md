@@ -128,13 +128,13 @@ ExpressionEvaluator evaluator = new ExpressionEvaluator();
 evaluator.setVariable("state", true);
 
 // Parse and evaluate expression
-boolean result = evaluator.evaluateBoolean("var('state')");
+boolean result = evaluator.evaluateAsBoolean("var('state')");
 
 // Parse expression
 Expression parsedExpression = Parser.parse("var('state')");
 
 // Evaluate already parsed expression
-result = evaluator.evaluateBoolean(parsedExpression);
+result = evaluator.evaluateAsBoolean(parsedExpression);
 ```
 
 The evaluator guarantees that variables will keep consistent during the evaluation of an expression.
