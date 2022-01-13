@@ -4,6 +4,8 @@ import mythtitans.exprl.eval.Context;
 import mythtitans.exprl.eval.Expression;
 import mythtitans.exprl.parser.Parser;
 
+import java.util.Set;
+
 public class NotExpression implements Expression {
 
     private final Expression operand;
@@ -24,5 +26,10 @@ public class NotExpression implements Expression {
     @Override
     public String getExpressionName() {
         return Parser.NOT_EXPRESSION;
+    }
+
+    @Override
+    public Set<String> getLiteralVariables() {
+        return ExpressionHelper.getLiteralVariables(operand);
     }
 }

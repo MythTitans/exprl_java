@@ -4,6 +4,8 @@ import mythtitans.exprl.eval.Context;
 import mythtitans.exprl.eval.Expression;
 import mythtitans.exprl.parser.Parser;
 
+import java.util.Set;
+
 public class CondExpression implements Expression {
 
     private final Expression operandCond;
@@ -43,6 +45,11 @@ public class CondExpression implements Expression {
     @Override
     public String getExpressionName() {
         return Parser.COND_EXPRESSION;
+    }
+
+    @Override
+    public Set<String> getLiteralVariables() {
+        return ExpressionHelper.getLiteralVariables(operandCond, operandThen, operandElse);
     }
 
     private Expression evaluateCondition(final Context context) throws EvaluationException {

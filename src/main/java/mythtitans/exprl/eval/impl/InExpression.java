@@ -4,6 +4,8 @@ import mythtitans.exprl.eval.Context;
 import mythtitans.exprl.eval.Expression;
 import mythtitans.exprl.parser.Parser;
 
+import java.util.Set;
+
 public class InExpression implements Expression {
 
     private final Expression operandA;
@@ -26,5 +28,10 @@ public class InExpression implements Expression {
     @Override
     public String getExpressionName() {
         return Parser.IN_EXPRESSION;
+    }
+
+    @Override
+    public Set<String> getLiteralVariables() {
+        return ExpressionHelper.getLiteralVariables(operandA, operandB);
     }
 }

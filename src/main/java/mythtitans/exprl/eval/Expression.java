@@ -1,5 +1,7 @@
 package mythtitans.exprl.eval;
 
+import java.util.Set;
+
 public interface Expression {
 
     default boolean evaluateAsBoolean(final Context context) throws EvaluationException {
@@ -19,6 +21,8 @@ public interface Expression {
     }
 
     String getExpressionName();
+
+    Set<String> getLiteralVariables();
 
     class EvaluationException extends Exception {
 

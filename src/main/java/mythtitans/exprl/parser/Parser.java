@@ -33,6 +33,7 @@ import static mythtitans.exprl.eval.impl.SubExpression.sub;
 import static mythtitans.exprl.eval.impl.SubstrExpression.substr;
 import static mythtitans.exprl.eval.impl.SubstrlExpression.substrl;
 import static mythtitans.exprl.eval.impl.VarExpression.var;
+import static mythtitans.exprl.eval.impl.LiteralVarExpression.var;
 
 public class Parser {
 
@@ -192,7 +193,7 @@ public class Parser {
         }
 
         if (LITERAL_VARIABLE_PATTERN.matcher(expression).matches()) {
-            return var(literal(expression));
+            return var(expression);
         }
 
         throw new ParsingException(String.format("Invalid literal [%s].", expression));

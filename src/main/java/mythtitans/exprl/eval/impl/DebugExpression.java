@@ -5,6 +5,7 @@ import mythtitans.exprl.eval.Expression;
 import mythtitans.exprl.parser.Parser;
 
 import java.util.Locale;
+import java.util.Set;
 
 public class DebugExpression implements Expression {
 
@@ -51,6 +52,11 @@ public class DebugExpression implements Expression {
     @Override
     public String getExpressionName() {
         return Parser.DEBUG_EXPRESSION;
+    }
+
+    @Override
+    public Set<String> getLiteralVariables() {
+        return ExpressionHelper.getLiteralVariables(debuggedOperand, debugLabelOperand);
     }
 
     private <T> void produceDebugMessage(final T result, final Context context) throws EvaluationException {

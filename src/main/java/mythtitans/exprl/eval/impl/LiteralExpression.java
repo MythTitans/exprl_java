@@ -4,6 +4,7 @@ import mythtitans.exprl.eval.Context;
 import mythtitans.exprl.eval.Expression;
 
 import java.util.Locale;
+import java.util.Set;
 
 public abstract class LiteralExpression<T> implements Expression {
 
@@ -27,6 +28,11 @@ public abstract class LiteralExpression<T> implements Expression {
 
     public static Expression literal(final String operand) {
         return new TextExpression(operand);
+    }
+
+    @Override
+    public Set<String> getLiteralVariables() {
+        return Set.of();
     }
 
     private static class BooleanExpression extends LiteralExpression<Boolean> {

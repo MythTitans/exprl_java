@@ -4,6 +4,8 @@ import mythtitans.exprl.eval.Context;
 import mythtitans.exprl.eval.Expression;
 import mythtitans.exprl.parser.Parser;
 
+import java.util.Set;
+
 import static mythtitans.exprl.eval.impl.EqExpression.eq;
 import static mythtitans.exprl.eval.impl.NotExpression.not;
 
@@ -33,5 +35,10 @@ public class NeqExpression implements Expression {
     @Override
     public String getExpressionName() {
         return Parser.NEQ_EXPRESSION;
+    }
+
+    @Override
+    public Set<String> getLiteralVariables() {
+        return ExpressionHelper.getLiteralVariables(operandA, operandB);
     }
 }

@@ -6,20 +6,20 @@ import mythtitans.exprl.parser.Parser;
 
 import java.util.Set;
 
-public class VarExpression implements Expression {
+public class LiteralVarExpression implements Expression {
 
-    private final Expression operand;
+    private final String operand;
 
-    public VarExpression(final Expression operand) {
+    public LiteralVarExpression(final String operand) {
         this.operand = operand;
     }
 
-    public static VarExpression var(final Expression operand) {
-        return new VarExpression(operand);
+    public static LiteralVarExpression var(final String operand) {
+        return new LiteralVarExpression(operand);
     }
 
-    private static Expression.EvaluationException variableEvaluationError(final String variableName) {
-        return new Expression.EvaluationException(String.format("Cannot find variable [%s].", variableName));
+    private static EvaluationException variableEvaluationError(final String variableName) {
+        return new EvaluationException(String.format("Cannot find variable [%s].", variableName));
     }
 
     @Override
@@ -49,11 +49,11 @@ public class VarExpression implements Expression {
 
     @Override
     public Set<String> getLiteralVariables() {
-        return operand.getLiteralVariables();
+        return Set.of(operand);
     }
 
     private Context.Variable<?> accessVariable(final Context context) throws EvaluationException {
-        String variableName = operand.evaluateAsText(context);
+        String variableName = operand;
         return context.getVariable(variableName).orElseThrow(() -> variableEvaluationError(variableName));
     }
 }

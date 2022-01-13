@@ -4,6 +4,8 @@ import mythtitans.exprl.eval.Context;
 import mythtitans.exprl.eval.Expression;
 import mythtitans.exprl.parser.Parser;
 
+import java.util.Set;
+
 public class SubstrExpression implements Expression {
 
     private final Expression operandStr;
@@ -43,5 +45,10 @@ public class SubstrExpression implements Expression {
     @Override
     public String getExpressionName() {
         return Parser.SUBSTR_EXPRESSION;
+    }
+
+    @Override
+    public Set<String> getLiteralVariables() {
+        return ExpressionHelper.getLiteralVariables(operandStr, operandBegin, operandEnd);
     }
 }

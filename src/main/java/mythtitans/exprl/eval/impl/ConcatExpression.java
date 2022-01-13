@@ -5,6 +5,7 @@ import mythtitans.exprl.eval.Expression;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -39,5 +40,10 @@ public class ConcatExpression implements Expression {
     @Override
     public String getExpressionName() {
         return CONCAT_EXPRESSION;
+    }
+
+    @Override
+    public Set<String> getLiteralVariables() {
+        return ExpressionHelper.getLiteralVariables(operands);
     }
 }

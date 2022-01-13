@@ -6,6 +6,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Set;
+
 import static mythtitans.exprl.eval.impl.EqExpression.EvaluationException;
 
 public class ParserTest {
@@ -355,6 +357,41 @@ public class ParserTest {
         parser.parse("composed.simple-dash");
         parser.parse("composed.simple_underscore");
         parser.parse("composed.composed.simple");
+    }
+
+    @Test
+    public void literal_variables_can_be_extracted_from_expression() throws Parser.ParsingException {
+        Assert.assertEquals(parser.parse("true").getLiteralVariables(), Set.of());
+        Assert.assertEquals(parser.parse("a").getLiteralVariables(), Set.of("a"));
+        Assert.assertEquals(parser.parse("and(a, b)").getLiteralVariables(), Set.of("a", "b"));
+        Assert.assertEquals(parser.parse("and(a, or(a, b))").getLiteralVariables(), Set.of("a", "b"));
+
+        Assert.assertEquals(parser.parse("add(a, b, c)").getLiteralVariables(), Set.of("a", "b", "c"));
+        Assert.assertEquals(parser.parse("and(a, b, c)").getLiteralVariables(), Set.of("a", "b", "c"));
+        Assert.assertEquals(parser.parse("concat(a, b, c)").getLiteralVariables(), Set.of("a", "b", "c"));
+        Assert.assertEquals(parser.parse("cond(a, b, c)").getLiteralVariables(), Set.of("a", "b", "c"));
+        Assert.assertEquals(parser.parse("debug(a, b)").getLiteralVariables(), Set.of("a", "b"));
+        Assert.assertEquals(parser.parse("div(a, b)").getLiteralVariables(), Set.of("a", "b"));
+        Assert.assertEquals(parser.parse("ends(a, b)").getLiteralVariables(), Set.of("a", "b"));
+        Assert.assertEquals(parser.parse("eq(a, b)").getLiteralVariables(), Set.of("a", "b"));
+        Assert.assertEquals(parser.parse("gt(a, b)").getLiteralVariables(), Set.of("a", "b"));
+        Assert.assertEquals(parser.parse("gte(a, b)").getLiteralVariables(), Set.of("a", "b"));
+        Assert.assertEquals(parser.parse("in(a, b)").getLiteralVariables(), Set.of("a", "b"));
+        Assert.assertEquals(parser.parse("len(a)").getLiteralVariables(), Set.of("a"));
+        Assert.assertEquals(parser.parse("lt(a, b)").getLiteralVariables(), Set.of("a", "b"));
+        Assert.assertEquals(parser.parse("lte(a, b)").getLiteralVariables(), Set.of("a", "b"));
+        Assert.assertEquals(parser.parse("max(a, b, c)").getLiteralVariables(), Set.of("a", "b", "c"));
+        Assert.assertEquals(parser.parse("min(a, b, c)").getLiteralVariables(), Set.of("a", "b", "c"));
+        Assert.assertEquals(parser.parse("mod(a, b)").getLiteralVariables(), Set.of("a", "b"));
+        Assert.assertEquals(parser.parse("mul(a, b, c)").getLiteralVariables(), Set.of("a", "b", "c"));
+        Assert.assertEquals(parser.parse("neq(a, b)").getLiteralVariables(), Set.of("a", "b"));
+        Assert.assertEquals(parser.parse("not(a)").getLiteralVariables(), Set.of("a"));
+        Assert.assertEquals(parser.parse("or(a, b, c)").getLiteralVariables(), Set.of("a", "b", "c"));
+        Assert.assertEquals(parser.parse("starts(a, b)").getLiteralVariables(), Set.of("a", "b"));
+        Assert.assertEquals(parser.parse("sub(a, b)").getLiteralVariables(), Set.of("a", "b"));
+        Assert.assertEquals(parser.parse("substr(a, b, c)").getLiteralVariables(), Set.of("a", "b", "c"));
+        Assert.assertEquals(parser.parse("substrl(a, b, c)").getLiteralVariables(), Set.of("a", "b", "c"));
+        Assert.assertEquals(parser.parse("var(a)").getLiteralVariables(), Set.of("a"));
     }
 
     @Test
